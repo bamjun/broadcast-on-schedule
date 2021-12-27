@@ -6,6 +6,37 @@ FileReadLine, l5, yingyec1.txt, 5
 FileReadLine, l6, yingyec1.txt, 1
 FileReadLine, l7, yingyec1.txt, 6
 FileReadLine, l8, yingyec1.txt, 7
+FileReadLine, l9, yingyec1.txt, 8
+; FileReadLine, l10, yingyec1.txt, 9
+; FileReadLine, l11, yingyec1.txt, 10
+; FileReadLine, l12, yingyec1.txt, 11
+; FileReadLine, l13, yingyec1.txt, 12
+
+func_broadcast_mask(now_time_index, func_index)
+{
+    if now_time_index = %func_index%
+    {
+        WinGet, ChromePIDVariable, PID, ahk_exe Melon Player.exe ;;; 멜론 0으로
+        VA_SetAppVolume(ChromePIDVariable, 65)
+        sleep, 400
+        VA_SetAppVolume(ChromePIDVariable, 40)
+        sleep, 200
+        Run, 05mask.mp3 ;;;;시작15분노래
+        VA_SetAppVolume(ChromePIDVariable, 20)
+        sleep, 400
+        VA_SetAppVolume(ChromePIDVariable, 0)
+        ;SLEEP, 122500      ;시간대기
+        SLEEP, 30000 ;시간대기
+        WinKill, Windows Media Player ;;노래끄기
+        VA_SetAppVolume(ChromePIDVariable, 40)
+        sleep, 1000
+        VA_SetAppVolume(ChromePIDVariable, 60)
+        sleep, 1000
+        VA_SetAppVolume(ChromePIDVariable, 80)
+        sleep, 1000
+        VA_SetAppVolume(ChromePIDVariable, 100) ;;; 멜론 100으로
+    }
+}
 
 time_check(time_check_index_1)
 {
@@ -53,6 +84,11 @@ c5 := time_check(l5)
 c6 := time_check(l6)
 c7 := time_check(l7)
 c8 := time_check(l8)
+c9 := time_check(l9)
+; c10 := time_check(l10)
+; c11 := time_check(l11)
+; c12 := time_check(l12)
+; c13 := time_check(l13)
 
 start_time = %A_Hour%%A_Min%%A_Sec%
 
@@ -78,19 +114,14 @@ time_break_check_index_1 = 0
 time_break_check_index_2 = 0
 time_break_check_index_3 = 0
 time_break_check_index_4 = 0
+time_break_check_index_5 = 0
+time_break_check_index_6 = 0
+time_break_check_index_7 = 0
 
 loop
 {
-    siggan = %A_Hour%%A_Min%%A_Sec%
 
-    time_break_check_index_1 := time_break_index(start_time,c1,time_break_check_index_1)
-    ;영업시작전까지
-    time_break_check_index_2 := time_break_index(c1,c7,time_break_check_index_2)
-    ;오픈후 1차 마스크
-    time_break_check_index_3 := time_break_index(c7,c8,time_break_check_index_3)
-    ;1차마스크, 2차마스크
-    time_break_check_index_4 := time_break_index(c8,c4,time_break_check_index_4)
-    ;2차마스크, 마감
+    siggan = %A_Hour%%A_Min%%A_Sec%
 
     if siggan = %c6%
     {
@@ -178,51 +209,25 @@ loop
         ;VA_SetAppVolume(ChromePIDVariable, 100)
     }
 
-    if siggan = %c7%
-    {
-        WinGet, ChromePIDVariable, PID, ahk_exe Melon Player.exe ;;; 멜론 0으로
-        VA_SetAppVolume(ChromePIDVariable, 65)
-        sleep, 400
-        VA_SetAppVolume(ChromePIDVariable, 40)
-        sleep, 200
-        Run, 05mask.mp3 ;;;;시작15분노래
-        VA_SetAppVolume(ChromePIDVariable, 20)
-        sleep, 400
-        VA_SetAppVolume(ChromePIDVariable, 0)
-        ;SLEEP, 122500      ;시간대기
-        SLEEP, 29000 ;시간대기
-        WinKill, Windows Media Player ;;노래끄기
-        VA_SetAppVolume(ChromePIDVariable, 40)
-        sleep, 1000
-        VA_SetAppVolume(ChromePIDVariable, 60)
-        sleep, 1000
-        VA_SetAppVolume(ChromePIDVariable, 80)
-        sleep, 1000
-        VA_SetAppVolume(ChromePIDVariable, 100) ;;; 멜론 100으로
-    }
+    func_broadcast_mask(siggan, c7)
+    func_broadcast_mask(siggan, c8)
+    func_broadcast_mask(siggan, c9)
+    ; func_broadcast_mask(siggan, c10)
+    ; func_broadcast_mask(siggan, c11)
+    ; func_broadcast_mask(siggan, c12)
+    ; func_broadcast_mask(siggan, c13)
 
-    if siggan = %c8%
-    {
-        WinGet, ChromePIDVariable, PID, ahk_exe Melon Player.exe ;;; 멜론 0으로
-        VA_SetAppVolume(ChromePIDVariable, 65)
-        sleep, 400
-        VA_SetAppVolume(ChromePIDVariable, 40)
-        sleep, 200
-        Run, 05mask.mp3 ;;;;시작15분노래
-        VA_SetAppVolume(ChromePIDVariable, 20)
-        sleep, 400
-        VA_SetAppVolume(ChromePIDVariable, 0)
-        ;SLEEP, 122500      ;시간대기
-        SLEEP, 29000 ;시간대기
-        WinKill, Windows Media Player ;;노래끄기
-        VA_SetAppVolume(ChromePIDVariable, 40)
-        sleep, 1000
-        VA_SetAppVolume(ChromePIDVariable, 60)
-        sleep, 1000
-        VA_SetAppVolume(ChromePIDVariable, 80)
-        sleep, 1000
-        VA_SetAppVolume(ChromePIDVariable, 100) ;;; 멜론 100으로
-    }
+    time_break_check_index_1 := time_break_index(start_time,c6,time_break_check_index_1)
+    ;영업시작전까지
+    time_break_check_index_2 := time_break_index(c7,c8,time_break_check_index_2)
+    ;오픈후 1차 마스크
+    time_break_check_index_3 := time_break_index(c8,c9,time_break_check_index_3)
+    ;1차마스크, 2차마스크
+    time_break_check_index_4 := time_break_index(c9,c4,time_break_check_index_4)
+    ; time_break_check_index_5 := time_break_index(c11,c12,time_break_check_index_5)
+    ; time_break_check_index_6 := time_break_index(c12,c13,time_break_check_index_6)
+    ; time_break_check_index_7 := time_break_index(c13,c4,time_break_check_index_7)
+    ;2차마스크, 마감
 
     sleep, 998
 }
